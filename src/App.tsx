@@ -335,16 +335,16 @@ function App() {
         {/* SIMULAÇÃO DE PERFORMANCE */}
         <section
           id="simulacao"
-          className="bg-[#F6F8FB] px-5 pb-10 md:px-8 lg:px-10"
+          className="simulation"
         >
-          <div className="rounded-xl border border-[#DEE5ED] bg-white p-4 shadow-sm md:p-5">
+          <div className="simulation__panel">
 
             {/* CARRO SELECIONADO */}
-            <h2 className="text-2xl font-bold text-[#202832]">
+            <h2 className="simulation__title">
               Carro selecionado
             </h2>
 
-            <p className="mt-2 text-sm text-[#718096]">
+            <p className="simulation__subtitle">
               Volkswagen Golf GTI • 2.0 TSI Turbo
             </p>
 
@@ -352,12 +352,12 @@ function App() {
             <img
               src="/carros/golf-gti.png"
               alt="Volkswagen Golf GTI selecionado"
-              className="mt-4 h-[180px] w-full rounded-lg object-cover md:h-[260px] lg:h-[320px]"
+              className="simulation__image"
             />
 
             {/* DADOS ORIGINAIS */}
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-[#718096]">
-              <span className="font-semibold uppercase">
+            <div className="simulation__original">
+              <span className="simulation__original-label">
                 Original
               </span>
               <span>230 cv</span>
@@ -366,38 +366,38 @@ function App() {
             </div>
 
             {/* LISTAGEM DE STAGES */}
-            <h3 className="mt-5 text-lg font-bold text-[#202832]">
+            <h3 className="simulation__section-title">
               Selecione um Stage
             </h3>
 
-            <div className="mt-3 grid grid-cols-3 gap-2">
+            <div className="stage-grid">
 
               {/* STAGE 1 */}
-              <article className="rounded-lg border border-[#1D2733] bg-[#1D2733] p-3 text-white">
-                <h4 className="text-xs font-bold md:text-sm">
+              <article className="stage-card stage-card--selected">
+                <h4 className="stage-card__title">
                   STAGE 1
                 </h4>
-                <p className="mt-1 text-[10px] text-gray-300 md:text-xs">
+                <p className="stage-card__description">
                   Remap
                 </p>
               </article>
 
               {/* STAGE 2 */}
-              <article className="rounded-lg border border-[#DEE5ED] bg-white p-3">
-                <h4 className="text-xs font-bold text-[#202832] md:text-sm">
+              <article className="stage-card">
+                <h4 className="stage-card__title">
                   STAGE 2
                 </h4>
-                <p className="mt-1 text-[10px] text-[#718096] md:text-xs">
+                <p className="stage-card__description">
                   Intermediário
                 </p>
               </article>
 
               {/* STAGE 3 */}
-              <article className="rounded-lg border border-[#DEE5ED] bg-white p-3">
-                <h4 className="text-xs font-bold text-[#202832] md:text-sm">
+              <article className="stage-card">
+                <h4 className="stage-card__title">
                   STAGE 3
                 </h4>
-                <p className="mt-1 text-[10px] text-[#718096] md:text-xs">
+                <p className="stage-card__description">
                   Avançado
                 </p>
               </article>
@@ -405,68 +405,68 @@ function App() {
             </div>
 
             {/* RESULTADOS DA PREPARAÇÃO */}
-            <h3 className="mt-5 text-lg font-bold text-[#202832]">
+            <h3 className="simulation__section-title">
               Resultados da preparação • Stage 1
             </h3>
 
-            <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-4">
+            <div className="performance-grid">
 
               {/* POTÊNCIA */}
-              <article className="rounded-lg border border-[#DEE5ED] bg-white p-3">
-                <p className="text-xs text-[#718096]">
+              <article className="performance-card">
+                <p className="performance-card__label">
                   Potência
                 </p>
 
-                <h4 className="mt-1 text-xl font-bold text-[#202832]">
+                <h4 className="performance-card__value">
                   265 cv
                 </h4>
 
-                <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-[#718096]">
-                  <div className="h-full w-[65%] bg-[#326797]" />
+                <div className="performance-card__track">
+                  <div className="performance-card__fill performance-card__fill--power" />
                 </div>
 
-                <p className="mt-1 text-right text-[10px] text-[#718096]">
+                <p className="performance-card__gain">
                   +15,2%
                 </p>
               </article>
 
               {/* TORQUE */}
-              <article className="rounded-lg border border-[#DEE5ED] bg-white p-3">
-                <p className="text-xs text-[#718096]">
+              <article className="performance-card">
+                <p className="performance-card__label">
                   Torque
                 </p>
 
-                <h4 className="mt-1 text-xl font-bold text-[#202832]">
+                <h4 className="performance-card__value">
                   420 Nm
                 </h4>
 
-                <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-[#718096]">
-                  <div className="h-full w-[70%] bg-[#326797]" />
+                <div className="performance-card__track">
+                  <div className="performance-card__fill performance-card__fill--torque" />
                 </div>
 
-                <p className="mt-1 text-right text-[10px] text-[#718096]">
+                <p className="performance-card__gain">
                   +20%
                 </p>
               </article>
 
               {/* ACELERAÇÃO */}
-              <article className="rounded-lg border border-[#DEE5ED] bg-white p-3">
-                <p className="text-xs text-[#718096]">
+              <article className="performance-card">
+                <p className="performance-card__label">
                   0 a 100 km/h
                 </p>
 
-                <h4 className="mt-1 text-xl font-bold text-[#202832]">
+                <h4 className="performance-card__value">
                   6,4 s
                 </h4>
               </article>
 
               {/* CUSTO ESTIMADO */}
-              <article className="rounded-lg border border-[#DEE5ED] bg-white p-3">
-                <p className="text-xs text-[#718096]">
+              <article className="performance-card">
+                <p className="performance-card__label">
                   Custo estimado
                 </p>
 
-                <h4 className="mt-1 text-xl font-bold text-[#202832]">
+                <h4 className="performance-card__value">
                   R$ 2.000
                 </h4>
               </article>
@@ -477,20 +477,20 @@ function App() {
         </main>
 
         {/* FOOTER */}
-        <footer className="bg-[#1D2733] text-white">
-          <div className="flex flex-col items-center justify-center gap-3 px-5 py-8 text-center md:flex-row md:justify-between md:px-8 md:py-10 md:text-left lg:px-10 lg:py-12">
+        <footer className="site-footer">
+          <div className="site-footer__inner">
 
             {/* LOGO */}
             <a href="#inicio" aria-label="Voltar ao início">
               <img
                 src="/logoTurboLab.png"
                 alt="TurboLab"
-                className="h-auto w-32 object-contain md:w-40 lg:w-44"
+                className="site-footer__logo"
               />
             </a>
 
             {/* FRASE */}
-            <p className="text-xs font-semibold text-white md:text-sm">
+            <p className="site-footer__tagline">
               Explore o potencial do seu carro.
             </p>
 

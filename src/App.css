@@ -245,6 +245,104 @@ h1, h2, h3, h4, p { margin: 0; }
   box-shadow: 0 4px 12px rgba(8,124,255,.2);
 }
 
+/* Simulação */
+.simulation {
+  padding: 48px 20px;
+  background: linear-gradient(135deg, #142a43 0%, #1c507a 100%);
+  border-top: 1px solid #2b5b82;
+  border-bottom: 1px solid #2b5b82;
+}
+.simulation__panel {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 16px;
+  background: white;
+  border: 1px solid #d8e4f0;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(16,28,48,.08);
+}
+.simulation__title { color: #1a2a3e; font-size: 24px; font-weight: 800; line-height: 1.3; letter-spacing: -.025em; }
+.simulation__subtitle { margin-top: 8px; color: #64748b; font-size: 14px; }
+.simulation__image {
+  width: 100%;
+  height: 200px;
+  margin-top: 16px;
+  background: #edf4fb;
+  border: 1px solid #d8e4f0;
+  border-radius: 12px;
+  object-fit: cover;
+  object-position: center;
+}
+.simulation__original {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: #64748b;
+  font-size: 12px;
+}
+.simulation__original-label { font-weight: 600; text-transform: uppercase; }
+.simulation__section-title { margin-top: 20px; color: #1a2a3e; font-size: 18px; font-weight: 700; }
+.stage-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.stage-card {
+  min-width: 0;
+  padding: 12px;
+  background: #f7fafe;
+  border: 1px solid #d8e4f0;
+  border-radius: 12px;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.stage-card:hover {
+  transform: translateY(-2px);
+  background: #f0f7ff;
+  border-color: #087cff;
+  box-shadow: 0 4px 12px rgba(8,124,255,.08);
+}
+.stage-card--selected {
+  color: white;
+  background: linear-gradient(135deg, #087cff, #005fcf);
+  border-color: #087cff;
+  box-shadow: 0 5px 16px rgba(8,124,255,.2);
+}
+.stage-card--selected:hover { color: white; background: linear-gradient(135deg, #087cff, #005fcf); border-color: #35cfff; }
+.stage-card__title { color: #1a2a3e; font-size: 12px; font-weight: 700; }
+.stage-card--selected .stage-card__title { color: white; }
+.stage-card__description { margin-top: 4px; color: #64748b; font-size: 10px; }
+.stage-card--selected .stage-card__description { color: #e5e7eb; }
+.performance-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+.performance-card {
+  min-width: 0;
+  padding: 12px;
+  background: #f7fafe;
+  border: 1px solid #d8e4f0;
+  border-radius: 12px;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.performance-card:hover { border-color: #80bcff; box-shadow: 0 5px 16px rgba(8,124,255,.09); }
+.performance-card__label { color: #64748b; font-size: 12px; }
+.performance-card__value { margin-top: 4px; color: #0664c9; font-size: 20px; font-weight: 700; }
+.performance-card__track { height: 8px; margin-top: 12px; overflow: hidden; background: #dce7f4; border-radius: 999px; }
+.performance-card__fill { height: 100%; background: linear-gradient(90deg, #087cff, #35cfff); box-shadow: 0 0 10px rgba(53,207,255,.28); }
+.performance-card__fill--power { width: 65%; }
+.performance-card__fill--torque { width: 70%; }
+.performance-card__gain { margin-top: 4px; color: #64748b; font-size: 10px; text-align: right; }
+
+/* Rodapé */
+.site-footer { color: white; background: #101c30; border-top: 1px solid #28405f; }
+.site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px 20px;
+  text-align: center;
+}
+.site-footer__logo { width: 128px; height: auto; object-fit: contain; }
+.site-footer__tagline { color: #d6e4f4; font-size: 12px; font-weight: 600; }
+
 @media (min-width: 768px) {
   .site-header__inner { padding: 0 32px; }
   .site-header__logo { width: 144px; }
@@ -259,6 +357,15 @@ h1, h2, h3, h4, p { margin: 0; }
   .brand-filter { font-size: 12px; }
   .vehicle-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .vehicle-card__image { height: 195px; }
+  .simulation { padding: 56px 32px; }
+  .simulation__panel { padding: 20px; }
+  .simulation__image { height: 280px; }
+  .stage-card__title { font-size: 14px; }
+  .stage-card__description { font-size: 12px; }
+  .performance-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .site-footer__inner { flex-direction: row; justify-content: space-between; padding: 40px 32px; text-align: left; }
+  .site-footer__logo { width: 160px; }
+  .site-footer__tagline { font-size: 14px; }
 }
 
 @media (min-width: 1024px) {
@@ -272,4 +379,16 @@ h1, h2, h3, h4, p { margin: 0; }
   .catalog__title, .catalog__intro, .catalog__controls, .vehicle-grid { max-width: 1360px; }
   .vehicle-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 32px; }
   .vehicle-card__image { height: 220px; }
+  .simulation { padding: 64px 40px; }
+  .simulation__image { height: 360px; }
+  .site-footer__inner { padding: 48px 40px; }
+  .site-footer__logo { width: 176px; }
+}
+
+/* Respeita a preferência de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .site-nav__link, .brand-filter, .search-field__input,
+  .vehicle-card, .vehicle-card__button, .stage-card, .performance-card { transition: none; }
+  .brand-filter:hover, .vehicle-card:hover, .stage-card:hover { transform: none; }
 }
