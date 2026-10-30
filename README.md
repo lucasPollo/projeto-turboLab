@@ -1,33 +1,75 @@
-# TurboLab
+# React + TypeScript + Vite
 
-O **TurboLab** é um projeto acadêmico que permite simular preparações automotivas e comparar o desempenho original dos veículos com os resultados estimados após modificações.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Funcionalidades
+Currently, two official plugins are available:
 
-- Catálogo com **12 veículos** de 3 marcas diferentes.
-- Filtros por marca (Todos + 3 marcas).
-- Busca por modelo de veículo.
-- Seleção de **Stage 1, Stage 2 e Stage 3**.
-- Comparação de potência (cv) e torque (Nm).
-- Gráficos horizontais com ganhos percentuais.
-- Estimativa de aceleração de 0 a 100 km/h e custo.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## Responsividade
+## React Compiler
 
-| Dispositivo | Colunas |
-|---|---|
-| Celular (até 767 px) | 1 |
-| Tablet (768–1023 px) | 2 |
-| Desktop (1024 px ou mais) | 3 |
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Tecnologias
+## Expanding the ESLint configuration
 
-React, TypeScript, Tailwind CSS, Vite, HTML5, Figma e Git/GitHub.
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-## Etapas
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-1. **Fase 1:** Wireframes responsivos.
-2. **Fase 2:** Desenvolvimento da interface estática.
-3. **Fase 3:** Componentização e interatividade.
-4. **Fase 4:** Integração de dados JSON.
----
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+
+```
+
+You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+
+```
