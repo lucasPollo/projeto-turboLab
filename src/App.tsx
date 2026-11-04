@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import './App.css'
 import FiltroMarcas from './components/FiltroMarcas'
 import Footer from './components/Footer'
@@ -6,9 +7,48 @@ import ListaCarros from './components/ListaCarros'
 import ListaStages from './components/ListaStages'
 import { carros } from './data/carros'
 import { stages } from './data/stages'
+import type { Carro, OpcaoMarca, Stage } from './data/tipos'
+
+const marcas = Array.from(new Set(carros.map((carro) => carro.marca)))
+
+const formatadorNumero = new Intl.NumberFormat('pt-BR', {
+  maximumFractionDigits: 1,
+})
+
+const formatadorPercentual = new Intl.NumberFormat('pt-BR', {
+  maximumFractionDigits: 1,
+  signDisplay: 'always',
+})
+
+function calcularGanho(valorPreparado: number, valorOriginal: number) {
+  return ((valorPreparado - valorOriginal) / valorOriginal) * 100
+}
 
 function App() {
-  const carroSelecionado = carros[0]
+  const [carroSelecionado, setCarroSelecionado] = useState<Carro | null>(null)
+  const [marcaSelecionada, setMarcaSelecionada] = useState<OpcaoMarca>('Todos')
+  const [stageSelecionado, setStageSelecionado] = useState<Stage>(stages[0])
+
+  const carrosFiltrados = marcaSelecionada === 'Todos'
+    ? carros
+    : carros.filter((carro) => carro.marca === marcaSelecionada)
+
+  const desempenhoDoStage = stageSelecionado.desempenho
+  const desempenho = desempenhoDoStage?.carroId === carroSelecionado?.id
+    ? desempenhoDoStage
+    : undefined
+  const ganhoPotencia = desempenho && carroSelecionado
+    ? calcularGanho(desempenho.potencia, carroSelecionado.potencia)
+    : null
+  const ganhoTorque = desempenho && carroSelecionado
+    ? calcularGanho(desempenho.torque, carroSelecionado.torque)
+    : null
+
+  function alternarCarroSelecionado(carro: Carro) {
+    setCarroSelecionado((carroAtual) => (
+      carroAtual?.id === carro.id ? null : carro
+    ))
+  }
 
   return (
     <div className="app-shell">
@@ -47,7 +87,11 @@ function App() {
 
           {/* FILTROS */}
           <div className="catalog__controls">
-            <FiltroMarcas />
+            <FiltroMarcas
+              marcas={marcas}
+              marcaSelecionada={marcaSelecionada}
+              aoSelecionarMarca={setMarcaSelecionada}
+            />
 
             {/* BUSCA */}
             <div className="search-field">
@@ -65,7 +109,11 @@ function App() {
           </div>
 
           {/* GRID DE VEÍCULOS */}
-          <ListaCarros carros={carros} />
+          <ListaCarros
+            carros={carrosFiltrados}
+            carroSelecionado={carroSelecionado}
+            aoSelecionarCarro={alternarCarroSelecionado}
+          />
         </section>
 
         {/* SIMULAÇÃO DE PERFORMANCE */}
@@ -76,7 +124,13 @@ function App() {
               Carro selecionado
             </h2>
 
-            <p className="simulation__subtitle">
+            {carroSelecionado === null ? (
+              <p className="simulation__subtitle" role="status">
+                Selecione um veículo no catálogo para visualizar os dados de preparação.
+              </p>
+            ) : (
+              <>
+              <p className="simulation__subtitle">
               {carroSelecionado.marca} {carroSelecionado.nome} • {carroSelecionado.motor}
             </p>
 
@@ -102,12 +156,22 @@ function App() {
               Selecione um Stage
             </h3>
 
-            <ListaStages stages={stages} />
+            <ListaStages
+              stages={stages}
+              stageSelecionado={stageSelecionado}
+              aoSelecionarStage={setStageSelecionado}
+            />
 
             {/* RESULTADOS DA PREPARAÇÃO */}
             <h3 className="simulation__section-title">
-              Resultados da preparação • Stage 1
+              Resultados da preparação • {stageSelecionado.nome}
             </h3>
+
+            {!desempenho && (
+              <p className="simulation__subtitle" role="status">
+                Dados de desempenho ainda não disponíveis para este veículo e stage.
+              </p>
+            )}
 
             <div className="performance-grid">
               {/* POTÊNCIA */}
@@ -117,15 +181,20 @@ function App() {
                 </p>
 
                 <h4 className="performance-card__value">
-                  265 cv
+                  {desempenho ? `${desempenho.potencia} cv` : '—'}
                 </h4>
 
                 <div className="performance-card__track">
-                  <div className="performance-card__fill performance-card__fill--power" />
+                  <div
+                    className="performance-card__fill performance-card__fill--power"
+                    style={{ width: `${desempenho?.larguraBarraPotencia ?? 0}%` }}
+                  />
                 </div>
 
                 <p className="performance-card__gain">
-                  +15,2%
+                  {ganhoPotencia === null
+                    ? 'Não disponível'
+                    : `${formatadorPercentual.format(ganhoPotencia)}%`}
                 </p>
               </article>
 
@@ -136,15 +205,20 @@ function App() {
                 </p>
 
                 <h4 className="performance-card__value">
-                  420 Nm
+                  {desempenho ? `${desempenho.torque} Nm` : '—'}
                 </h4>
 
                 <div className="performance-card__track">
-                  <div className="performance-card__fill performance-card__fill--torque" />
+                  <div
+                    className="performance-card__fill performance-card__fill--torque"
+                    style={{ width: `${desempenho?.larguraBarraTorque ?? 0}%` }}
+                  />
                 </div>
 
                 <p className="performance-card__gain">
-                  +20%
+                  {ganhoTorque === null
+                    ? 'Não disponível'
+                    : `${formatadorPercentual.format(ganhoTorque)}%`}
                 </p>
               </article>
 
@@ -155,7 +229,9 @@ function App() {
                 </p>
 
                 <h4 className="performance-card__value">
-                  6,4 s
+                  {desempenho
+                    ? `${formatadorNumero.format(desempenho.tempoZeroACem)} s`
+                    : '—'}
                 </h4>
               </article>
 
@@ -166,10 +242,14 @@ function App() {
                 </p>
 
                 <h4 className="performance-card__value">
-                  R$ 2.000
+                  {desempenho
+                    ? `R$ ${formatadorNumero.format(desempenho.custo)}`
+                    : '—'}
                 </h4>
               </article>
             </div>
+              </>
+            )}
           </div>
         </section>
       </main>

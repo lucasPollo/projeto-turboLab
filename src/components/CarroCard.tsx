@@ -2,10 +2,11 @@ import type { Carro } from '../data/tipos'
 
 type CarroCardProps = {
   carro: Carro
-  selecionado?: boolean
+  selecionado: boolean
+  aoSelecionar: (carro: Carro) => void
 }
 
-function CarroCard({ carro, selecionado = false }: CarroCardProps) {
+function CarroCard({ carro, selecionado, aoSelecionar }: CarroCardProps) {
   const nomeCompleto = carro.nome.startsWith(carro.marca)
     ? carro.nome
     : `${carro.marca} ${carro.nome}`
@@ -24,6 +25,8 @@ function CarroCard({ carro, selecionado = false }: CarroCardProps) {
       <button
         type="button"
         className={`vehicle-card__button${selecionado ? ' vehicle-card__button--selected' : ''}`}
+        aria-pressed={selecionado}
+        onClick={() => aoSelecionar(carro)}
       >
         {selecionado ? '✓ Selecionado' : 'Selecionar veículo'}
       </button>

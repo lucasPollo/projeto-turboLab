@@ -2,12 +2,25 @@ import type { Stage } from '../data/tipos'
 
 type StageCardProps = {
   stage: Stage
-  selecionado?: boolean
+  selecionado: boolean
+  aoSelecionar: (stage: Stage) => void
 }
 
-function StageCard({ stage, selecionado = false }: StageCardProps) {
+function StageCard({ stage, selecionado, aoSelecionar }: StageCardProps) {
   return (
-    <article className={`stage-card${selecionado ? ' stage-card--selected' : ''}`}>
+    <article
+      className={`stage-card${selecionado ? ' stage-card--selected' : ''}`}
+      role="button"
+      tabIndex={0}
+      aria-pressed={selecionado}
+      onClick={() => aoSelecionar(stage)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          aoSelecionar(stage)
+        }
+      }}
+    >
       <h4 className="stage-card__title">
         {stage.nome.toUpperCase()}
       </h4>
