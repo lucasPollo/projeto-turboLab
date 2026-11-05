@@ -2,6 +2,15 @@ export type Marca = 'Volkswagen' | 'BMW' | 'Audi'
 
 export type OpcaoMarca = 'Todos' | Marca
 
+export type StageId = 1 | 2 | 3
+
+export type DesempenhoStage = {
+  potencia: number
+  torque: number
+  aceleracao0a100: number
+  custoEstimado: number
+}
+
 export type Carro = {
   id: string
   marca: Marca
@@ -10,21 +19,11 @@ export type Carro = {
   potencia: number
   torque: number
   imagem: string
-}
-
-export type DesempenhoStage = {
-  carroId: Carro['id']
-  potencia: number
-  torque: number
-  tempoZeroACem: number
-  custo: number
-  larguraBarraPotencia: number
-  larguraBarraTorque: number
+  desempenhoPorStage: Record<StageId, DesempenhoStage>
 }
 
 export type Stage = {
-  id: number
+  id: StageId
   nome: string
   descricao: string
-  desempenho?: DesempenhoStage
 }

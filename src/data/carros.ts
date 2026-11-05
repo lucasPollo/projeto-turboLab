@@ -9,6 +9,11 @@ export const carros: Carro[] = [
     potencia: 230,
     torque: 350,
     imagem: '/carros/golf-gti.png',
+    desempenhoPorStage: {
+      1: { potencia: 265, torque: 420, aceleracao0a100: 6.4, custoEstimado: 2000 },
+      2: { potencia: 288, torque: 455, aceleracao0a100: 6.0, custoEstimado: 6500 },
+      3: { potencia: 311, torque: 490, aceleracao0a100: 5.5, custoEstimado: 18000 },
+    },
   },
   {
     id: 'jetta-gli',
@@ -18,6 +23,11 @@ export const carros: Carro[] = [
     potencia: 230,
     torque: 350,
     imagem: '/carros/jetta-gli.png',
+    desempenhoPorStage: {
+      1: { potencia: 265, torque: 420, aceleracao0a100: 6.3, custoEstimado: 2200 },
+      2: { potencia: 288, torque: 455, aceleracao0a100: 6.0, custoEstimado: 6500 },
+      3: { potencia: 311, torque: 490, aceleracao0a100: 5.6, custoEstimado: 18500 },
+    },
   },
   {
     id: 'polo-gts',
@@ -27,6 +37,11 @@ export const carros: Carro[] = [
     potencia: 150,
     torque: 250,
     imagem: '/carros/polo-gts.png',
+    desempenhoPorStage: {
+      1: { potencia: 173, torque: 300, aceleracao0a100: 7.9, custoEstimado: 1800 },
+      2: { potencia: 188, torque: 325, aceleracao0a100: 7.5, custoEstimado: 5500 },
+      3: { potencia: 203, torque: 350, aceleracao0a100: 7.0, custoEstimado: 14000 },
+    },
   },
   {
     id: 'tiguan-r-line',
@@ -36,6 +51,11 @@ export const carros: Carro[] = [
     potencia: 220,
     torque: 350,
     imagem: '/carros/tiguan-rline.png',
+    desempenhoPorStage: {
+      1: { potencia: 253, torque: 420, aceleracao0a100: 6.9, custoEstimado: 2500 },
+      2: { potencia: 275, torque: 455, aceleracao0a100: 6.5, custoEstimado: 7000 },
+      3: { potencia: 297, torque: 490, aceleracao0a100: 6.1, custoEstimado: 19000 },
+    },
   },
   {
     id: 'bmw-320i',
@@ -45,6 +65,11 @@ export const carros: Carro[] = [
     potencia: 184,
     torque: 300,
     imagem: '/carros/bmw-320i.png',
+    desempenhoPorStage: {
+      1: { potencia: 212, torque: 360, aceleracao0a100: 6.8, custoEstimado: 2500 },
+      2: { potencia: 230, torque: 390, aceleracao0a100: 6.4, custoEstimado: 7000 },
+      3: { potencia: 248, torque: 420, aceleracao0a100: 6.0, custoEstimado: 20000 },
+    },
   },
   {
     id: 'bmw-330i',
@@ -54,6 +79,11 @@ export const carros: Carro[] = [
     potencia: 258,
     torque: 400,
     imagem: '/carros/bmw-330i.png',
+    desempenhoPorStage: {
+      1: { potencia: 297, torque: 480, aceleracao0a100: 5.5, custoEstimado: 3000 },
+      2: { potencia: 323, torque: 520, aceleracao0a100: 5.1, custoEstimado: 8000 },
+      3: { potencia: 348, torque: 560, aceleracao0a100: 4.8, custoEstimado: 23000 },
+    },
   },
   {
     id: 'bmw-m340i',
@@ -63,6 +93,11 @@ export const carros: Carro[] = [
     potencia: 387,
     torque: 500,
     imagem: '/carros/bmw-m340i.png',
+    desempenhoPorStage: {
+      1: { potencia: 445, torque: 600, aceleracao0a100: 4.1, custoEstimado: 4000 },
+      2: { potencia: 484, torque: 650, aceleracao0a100: 3.9, custoEstimado: 10000 },
+      3: { potencia: 522, torque: 700, aceleracao0a100: 3.6, custoEstimado: 32000 },
+    },
   },
   {
     id: 'bmw-118i',
@@ -72,6 +107,11 @@ export const carros: Carro[] = [
     potencia: 140,
     torque: 220,
     imagem: '/carros/bmw-118i.png',
+    desempenhoPorStage: {
+      1: { potencia: 161, torque: 264, aceleracao0a100: 8.1, custoEstimado: 2000 },
+      2: { potencia: 175, torque: 286, aceleracao0a100: 7.7, custoEstimado: 6000 },
+      3: { potencia: 189, torque: 308, aceleracao0a100: 7.3, custoEstimado: 17000 },
+    },
   },
   {
     id: 'audi-a3',
@@ -81,6 +121,11 @@ export const carros: Carro[] = [
     potencia: 190,
     torque: 320,
     imagem: '/carros/audi-a3.png',
+    desempenhoPorStage: {
+      1: { potencia: 219, torque: 384, aceleracao0a100: 6.8, custoEstimado: 2500 },
+      2: { potencia: 238, torque: 416, aceleracao0a100: 6.4, custoEstimado: 7000 },
+      3: { potencia: 257, torque: 448, aceleracao0a100: 6.0, custoEstimado: 20000 },
+    },
   },
   {
     id: 'audi-a4',
@@ -90,6 +135,11 @@ export const carros: Carro[] = [
     potencia: 204,
     torque: 320,
     imagem: '/carros/audi-a4.png',
+    desempenhoPorStage: {
+      1: { potencia: 235, torque: 384, aceleracao0a100: 6.7, custoEstimado: 2800 },
+      2: { potencia: 255, torque: 416, aceleracao0a100: 6.3, custoEstimado: 7500 },
+      3: { potencia: 275, torque: 448, aceleracao0a100: 5.9, custoEstimado: 22000 },
+    },
   },
   {
     id: 'audi-s3',
@@ -99,6 +149,11 @@ export const carros: Carro[] = [
     potencia: 310,
     torque: 400,
     imagem: '/carros/audi-s3.png',
+    desempenhoPorStage: {
+      1: { potencia: 357, torque: 480, aceleracao0a100: 4.6, custoEstimado: 3500 },
+      2: { potencia: 388, torque: 520, aceleracao0a100: 4.3, custoEstimado: 9000 },
+      3: { potencia: 419, torque: 560, aceleracao0a100: 4.0, custoEstimado: 28000 },
+    },
   },
   {
     id: 'audi-q3',
@@ -108,5 +163,10 @@ export const carros: Carro[] = [
     potencia: 180,
     torque: 320,
     imagem: '/carros/audi-q3.png',
+    desempenhoPorStage: {
+      1: { potencia: 207, torque: 384, aceleracao0a100: 7.2, custoEstimado: 2500 },
+      2: { potencia: 225, torque: 416, aceleracao0a100: 6.8, custoEstimado: 7000 },
+      3: { potencia: 243, torque: 448, aceleracao0a100: 6.4, custoEstimado: 20000 },
+    },
   },
 ]

@@ -323,10 +323,11 @@ h1, h2, h3, h4, p { margin: 0; }
 .performance-card:hover { border-color: #80bcff; box-shadow: 0 5px 16px rgba(8,124,255,.09); }
 .performance-card__label { color: #64748b; font-size: 12px; }
 .performance-card__value { margin-top: 4px; color: #0664c9; font-size: 20px; font-weight: 700; }
+.performance-card__comparison { margin-top: 12px; color: #64748b; font-size: 10px; }
 .performance-card__track { height: 8px; margin-top: 12px; overflow: hidden; background: #dce7f4; border-radius: 999px; }
+.performance-card__comparison + .performance-card__track { margin-top: 4px; }
 .performance-card__fill { height: 100%; background: linear-gradient(90deg, #087cff, #35cfff); box-shadow: 0 0 10px rgba(53,207,255,.28); }
-.performance-card__fill--power { width: 65%; }
-.performance-card__fill--torque { width: 70%; }
+.performance-card__fill--original { background: #94a3b8; box-shadow: none; }
 .performance-card__gain { margin-top: 4px; color: #64748b; font-size: 10px; text-align: right; }
 
 /* Rodapé */
