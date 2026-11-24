@@ -21,7 +21,7 @@ const formatadorCusto = new Intl.NumberFormat('pt-BR', {
 })
 
 function App() {
-  const { carros, carregando, erro } = useCarros()
+  const { carros, carregando, erro, tentarNovamente } = useCarros()
   const [carroSelecionado, setCarroSelecionado] = useState<Carro | null>(null)
   const [marcaSelecionada, setMarcaSelecionada] = useState<OpcaoMarca>('Todos')
   const [stageSelecionado, setStageSelecionado] = useState<Stage>(stages[0])
@@ -85,43 +85,61 @@ function App() {
             Catálogo de carros
           </h2>
 
-          <p className="catalog__intro" role="status">
-            {erro
-              ? erro
-              : carregando
-                ? 'Carregando catálogo de carros…'
-                : `Escolha entre ${carros.length} modelos disponíveis`}
-          </p>
-
-          {/* FILTROS */}
-          <div className="catalog__controls">
-            <FiltroMarcas
-              marcas={marcas}
-              marcaSelecionada={marcaSelecionada}
-              aoSelecionarMarca={setMarcaSelecionada}
-            />
-
-            {/* BUSCA */}
-            <div className="search-field">
-              <label htmlFor="buscar-carro" className="visually-hidden">
-                Buscar veículo
-              </label>
-
-              <input
-                id="buscar-carro"
-                type="search"
-                placeholder="⌕  Buscar veículo por nome..."
-                className="search-field__input"
-              />
+          {carregando ? (
+            <div className="catalog-state" role="status" aria-live="polite">
+              <span className="catalog-state__loader" aria-hidden="true" />
+              <p className="catalog-state__message">Carregando veículos...</p>
             </div>
-          </div>
+          ) : erro ? (
+            <div className="catalog-state catalog-state--error" role="alert">
+              <p className="catalog-state__message">
+                Não foi possível carregar os veículos. Tente novamente.
+              </p>
+              <button
+                type="button"
+                className="catalog-state__retry"
+                onClick={tentarNovamente}
+              >
+                Tentar novamente
+              </button>
+            </div>
+          ) : (
+            <>
+              <p className="catalog__intro">
+                Escolha entre {carros.length} modelos disponíveis
+              </p>
 
-          {/* GRID DE VEÍCULOS */}
-          <ListaCarros
-            carros={carrosFiltrados}
-            carroSelecionado={carroSelecionado}
-            aoSelecionarCarro={alternarCarroSelecionado}
-          />
+              {/* FILTROS */}
+              <div className="catalog__controls">
+                <FiltroMarcas
+                  marcas={marcas}
+                  marcaSelecionada={marcaSelecionada}
+                  aoSelecionarMarca={setMarcaSelecionada}
+                />
+
+                {/* BUSCA - funcionalidade reservada para o próximo commit */}
+                <div className="search-field">
+                  <label htmlFor="buscar-carro" className="visually-hidden">
+                    Buscar veículo
+                  </label>
+
+                  <input
+                    id="buscar-carro"
+                    type="search"
+                    placeholder="⌕  Buscar veículo por nome..."
+                    className="search-field__input"
+                  />
+                </div>
+              </div>
+
+              {/* GRID DE VEÍCULOS */}
+              <ListaCarros
+                carros={carrosFiltrados}
+                carroSelecionado={carroSelecionado}
+                aoSelecionarCarro={alternarCarroSelecionado}
+              />
+            </>
+          )}
         </section>
 
         {/* SIMULAÇÃO DE PERFORMANCE */}

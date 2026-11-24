@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { API_URL } from '../../../lib/api'
 import type { Carro } from '../../../data/tipos'
-import type { CarroDto } from '../dtos/carro'
+import { validarCarroDto } from '../dtos/carro'
 import { transformarCarros } from '../services/carros-service'
 
 export function useCarros() {
   const [carros, setCarros] = useState<Carro[]>([])
   const [carregando, setCarregando] = useState<boolean>(true)
-  const [erro, setErro] = useState<string | null>(null)
+  const [erro, setErro] = useState<boolean>(false)
+  const [tentativa, setTentativa] = useState<number>(0)
 
   useEffect(() => {
     const controlador = new AbortController()
@@ -15,28 +16,24 @@ export function useCarros() {
     async function carregarCarros() {
       try {
         setCarregando(true)
-        setErro(null)
+        setErro(false)
 
         const resposta = await fetch(API_URL, { signal: controlador.signal })
         if (!resposta.ok) {
-          throw new Error(`Não foi possível carregar os veículos (HTTP ${resposta.status}).`)
+          throw new Error(`Erro HTTP ${resposta.status}.`)
         }
 
         const carrosDto: unknown = await resposta.json()
-        if (!Array.isArray(carrosDto)) {
-          throw new Error('O catálogo de veículos possui um formato inválido.')
+        if (!Array.isArray(carrosDto) || !carrosDto.every(validarCarroDto)) {
+          throw new Error('Resposta inválida da API.')
         }
 
         if (!controlador.signal.aborted) {
-          setCarros(transformarCarros(carrosDto as CarroDto[]))
+          setCarros(transformarCarros(carrosDto))
         }
-      } catch (erroDesconhecido) {
+      } catch {
         if (!controlador.signal.aborted) {
-          const mensagem = erroDesconhecido instanceof Error
-            ? erroDesconhecido.message
-            : 'Não foi possível carregar o catálogo de veículos.'
-
-          setErro(mensagem)
+          setErro(true)
         }
       } finally {
         if (!controlador.signal.aborted) {
@@ -48,7 +45,11 @@ export function useCarros() {
     void carregarCarros()
 
     return () => controlador.abort()
-  }, [])
+  }, [tentativa])
 
-  return { carros, carregando, erro }
+  function tentarNovamente() {
+    setTentativa((tentativaAtual) => tentativaAtual + 1)
+  }
+
+  return { carros, carregando, erro, tentarNovamente }
 }
