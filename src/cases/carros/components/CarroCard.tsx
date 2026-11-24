@@ -1,4 +1,4 @@
-import type { Carro } from '../data/tipos'
+import type { Carro } from '../../../data/tipos'
 
 type CarroCardProps = {
   carro: Carro

@@ -1,4 +1,4 @@
-import type { Stage } from '../data/tipos'
+import type { Stage } from '../../../data/tipos'
 import StageCard from './StageCard'
 
 type ListaStagesProps = {

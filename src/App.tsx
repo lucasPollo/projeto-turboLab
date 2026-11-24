@@ -1,16 +1,14 @@
 import { useState } from 'react'
 import './App.css'
-import DesempenhoCard from './components/DesempenhoCard'
-import FiltroMarcas from './components/FiltroMarcas'
+import DesempenhoCard from './cases/carros/components/DesempenhoCard'
+import FiltroMarcas from './cases/carros/components/FiltroMarcas'
+import ListaCarros from './cases/carros/components/ListaCarros'
+import ListaStages from './cases/carros/components/ListaStages'
+import { useCarros } from './cases/carros/hooks/use-carros'
 import Footer from './components/Footer'
 import Header from './components/Header'
-import ListaCarros from './components/ListaCarros'
-import ListaStages from './components/ListaStages'
-import { carros } from './data/carros'
 import { stages } from './data/stages'
 import type { Carro, OpcaoMarca, Stage } from './data/tipos'
-
-const marcas = Array.from(new Set(carros.map((carro) => carro.marca)))
 
 const formatadorAceleracao = new Intl.NumberFormat('pt-BR', {
   minimumFractionDigits: 1,
@@ -23,9 +21,12 @@ const formatadorCusto = new Intl.NumberFormat('pt-BR', {
 })
 
 function App() {
+  const { carros, carregando, erro } = useCarros()
   const [carroSelecionado, setCarroSelecionado] = useState<Carro | null>(null)
   const [marcaSelecionada, setMarcaSelecionada] = useState<OpcaoMarca>('Todos')
   const [stageSelecionado, setStageSelecionado] = useState<Stage>(stages[0])
+
+  const marcas = Array.from(new Set(carros.map((carro) => carro.marca)))
 
   const carrosFiltrados = marcaSelecionada === 'Todos'
     ? carros
@@ -84,8 +85,12 @@ function App() {
             Catálogo de carros
           </h2>
 
-          <p className="catalog__intro">
-            Escolha entre 12 modelos disponíveis
+          <p className="catalog__intro" role="status">
+            {erro
+              ? erro
+              : carregando
+                ? 'Carregando catálogo de carros…'
+                : `Escolha entre ${carros.length} modelos disponíveis`}
           </p>
 
           {/* FILTROS */}
