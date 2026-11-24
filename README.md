@@ -1,75 +1,74 @@
-# React + TypeScript + Vite
+# TURBOLAB
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O TURBOLAB é uma aplicação acadêmica para consulta de veículos e simulação de preparação automotiva. O catálogo permite filtrar e pesquisar modelos, selecionar um veículo e comparar as estimativas de desempenho dos Stages 1, 2 e 3.
 
-Currently, two official plugins are available:
+## Tecnologias utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React
+- TypeScript
+- CSS
 
-## React Compiler
+## Estrutura do projeto
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+A aplicação está organizada por responsabilidades:
 
-## Expanding the ESLint configuration
+- `src/components`: componentes gerais, como cabeçalho e rodapé;
+- `src/cases/carros/components`: componentes do catálogo e da simulação;
+- `src/cases/carros/hooks`: hook responsável pelo carregamento dos veículos;
+- `src/cases/carros/dtos`: tipos e validação dos dados recebidos da API;
+- `src/cases/carros/services`: conversão dos DTOs para o modelo usado pela interface;
+- `src/data`: tipos da aplicação e vetor local dos Stages;
+- `src/lib`: configuração do endereço da API.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Integração com a API do Mockaroo
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Os 12 veículos do catálogo são carregados diretamente da API do Mockaroo, sem proxy do Vite. O endereço utilizado pela aplicação está centralizado em `src/lib/api.ts`.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+O hook `useCarros` executa o `fetch` dentro de um `useEffect`. A resposta é recebida inicialmente como `unknown`, validada pelo DTO e convertida pelo service para o tipo `Carro` antes de ser armazenada no estado. Valores numéricos que chegam como texto são convertidos para `number`, e apenas as marcas previstas pela aplicação são aceitas.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+O carregamento também utiliza `AbortController` para cancelar a requisição caso o componente seja desmontado.
 
+## Carregamento e tratamento de erros
+
+Os estados de veículos, carregamento e erro são explicitamente tipados. Enquanto a requisição está em andamento, o catálogo exibe uma indicação visual de carregamento.
+
+Falhas de conexão, respostas HTTP sem sucesso, JSON incompatível e dados inválidos levam ao estado de erro. Nesse caso, a interface apresenta uma mensagem e o botão **Tentar novamente**, que inicia uma nova requisição. A aplicação não substitui silenciosamente uma falha da API por dados locais.
+
+## Pesquisa, filtros e Stages
+
+A pesquisa de veículos é um campo controlado por `useState` e filtra os resultados por nome em tempo real. Ela funciona em conjunto com o filtro de marcas, permitindo restringir simultaneamente os modelos exibidos.
+
+Ao selecionar um veículo, a área de simulação apresenta os valores originais e permite alternar entre Stage 1, Stage 2 e Stage 3. Os Stages continuam definidos em um vetor local, enquanto potência, torque, aceleração de 0 a 100 km/h e custo estimado de cada veículo são obtidos da API. Os gráficos comparam os valores originais com os valores preparados.
+
+## Como executar
+
+Requisitos: Node.js e npm instalados.
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Após iniciar o servidor, abra no navegador o endereço exibido pelo Vite.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Comandos de validação
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run lint
+npm run build
 ```
+
+## Desafios bonificados
+
+### Desafio 1 — Busca em tempo real
+
+Campo controlado por `useState`, com filtragem instantânea por nome e integração com o filtro de marcas.
+
+### Desafio 2 — Publicação
+
+Publicação da aplicação no Railway, com acesso público e link disponibilizado neste README.
+
+## Demonstração online
+
+> URL pública do Railway: **https://turbolab.up.railway.app/**
+
