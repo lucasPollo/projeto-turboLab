@@ -25,12 +25,23 @@ function App() {
   const [carroSelecionado, setCarroSelecionado] = useState<Carro | null>(null)
   const [marcaSelecionada, setMarcaSelecionada] = useState<OpcaoMarca>('Todos')
   const [stageSelecionado, setStageSelecionado] = useState<Stage>(stages[0])
+  const [busca, setBusca] = useState<string>('')
 
   const marcas = Array.from(new Set(carros.map((carro) => carro.marca)))
+  const buscaNormalizada = busca.trim().toLocaleLowerCase('pt-BR')
 
-  const carrosFiltrados = marcaSelecionada === 'Todos'
-    ? carros
-    : carros.filter((carro) => carro.marca === marcaSelecionada)
+  const carrosFiltrados = carros.filter((carro) => {
+    const correspondeAMarca = marcaSelecionada === 'Todos'
+      || carro.marca === marcaSelecionada
+    const nomeCompleto = carro.nome.startsWith(carro.marca)
+      ? carro.nome
+      : `${carro.marca} ${carro.nome}`
+    const correspondeABusca = nomeCompleto
+      .toLocaleLowerCase('pt-BR')
+      .includes(buscaNormalizada)
+
+    return correspondeAMarca && correspondeABusca
+  })
 
   const desempenho = carroSelecionado?.desempenhoPorStage[stageSelecionado.id]
   const desempenhosDoCarro = carroSelecionado
@@ -117,7 +128,7 @@ function App() {
                   aoSelecionarMarca={setMarcaSelecionada}
                 />
 
-                {/* BUSCA - funcionalidade reservada para o próximo commit */}
+                {/* BUSCA */}
                 <div className="search-field">
                   <label htmlFor="buscar-carro" className="visually-hidden">
                     Buscar veículo
@@ -128,16 +139,24 @@ function App() {
                     type="search"
                     placeholder="⌕  Buscar veículo por nome..."
                     className="search-field__input"
+                    value={busca}
+                    onChange={(event) => setBusca(event.target.value)}
                   />
                 </div>
               </div>
 
               {/* GRID DE VEÍCULOS */}
-              <ListaCarros
-                carros={carrosFiltrados}
-                carroSelecionado={carroSelecionado}
-                aoSelecionarCarro={alternarCarroSelecionado}
-              />
+              {carrosFiltrados.length > 0 ? (
+                <ListaCarros
+                  carros={carrosFiltrados}
+                  carroSelecionado={carroSelecionado}
+                  aoSelecionarCarro={alternarCarroSelecionado}
+                />
+              ) : (
+                <div className="catalog-state" role="status" aria-live="polite">
+                  <p className="catalog-state__message">Nenhum veículo encontrado</p>
+                </div>
+              )}
             </>
           )}
         </section>
