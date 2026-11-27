@@ -1,4 +1,4 @@
-import type { Carro } from '../data/tipos'
+import type { Carro } from '../../../data/tipos'
 import CarroCard from './CarroCard'
 
 type ListaCarrosProps = {

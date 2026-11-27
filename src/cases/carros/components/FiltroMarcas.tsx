@@ -1,4 +1,4 @@
-import type { Marca, OpcaoMarca } from '../data/tipos'
+import type { Marca, OpcaoMarca } from '../../../data/tipos'
 
 type FiltroMarcasProps = {
   marcas: Marca[]

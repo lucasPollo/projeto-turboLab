@@ -1,4 +1,4 @@
-import type { Stage } from '../data/tipos'
+import type { Stage } from '../../../data/tipos'
 
 type StageCardProps = {
   stage: Stage

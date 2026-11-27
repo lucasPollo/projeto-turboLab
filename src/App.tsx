@@ -1,16 +1,14 @@
 import { useState } from 'react'
 import './App.css'
-import DesempenhoCard from './components/DesempenhoCard'
-import FiltroMarcas from './components/FiltroMarcas'
+import DesempenhoCard from './cases/carros/components/DesempenhoCard'
+import FiltroMarcas from './cases/carros/components/FiltroMarcas'
+import ListaCarros from './cases/carros/components/ListaCarros'
+import ListaStages from './cases/carros/components/ListaStages'
+import { useCarros } from './cases/carros/hooks/use-carros'
 import Footer from './components/Footer'
 import Header from './components/Header'
-import ListaCarros from './components/ListaCarros'
-import ListaStages from './components/ListaStages'
-import { carros } from './data/carros'
 import { stages } from './data/stages'
 import type { Carro, OpcaoMarca, Stage } from './data/tipos'
-
-const marcas = Array.from(new Set(carros.map((carro) => carro.marca)))
 
 const formatadorAceleracao = new Intl.NumberFormat('pt-BR', {
   minimumFractionDigits: 1,
@@ -23,13 +21,27 @@ const formatadorCusto = new Intl.NumberFormat('pt-BR', {
 })
 
 function App() {
+  const { carros, carregando, erro, tentarNovamente } = useCarros()
   const [carroSelecionado, setCarroSelecionado] = useState<Carro | null>(null)
   const [marcaSelecionada, setMarcaSelecionada] = useState<OpcaoMarca>('Todos')
   const [stageSelecionado, setStageSelecionado] = useState<Stage>(stages[0])
+  const [busca, setBusca] = useState<string>('')
 
-  const carrosFiltrados = marcaSelecionada === 'Todos'
-    ? carros
-    : carros.filter((carro) => carro.marca === marcaSelecionada)
+  const marcas = Array.from(new Set(carros.map((carro) => carro.marca)))
+  const buscaNormalizada = busca.trim().toLocaleLowerCase('pt-BR')
+
+  const carrosFiltrados = carros.filter((carro) => {
+    const correspondeAMarca = marcaSelecionada === 'Todos'
+      || carro.marca === marcaSelecionada
+    const nomeCompleto = carro.nome.startsWith(carro.marca)
+      ? carro.nome
+      : `${carro.marca} ${carro.nome}`
+    const correspondeABusca = nomeCompleto
+      .toLocaleLowerCase('pt-BR')
+      .includes(buscaNormalizada)
+
+    return correspondeAMarca && correspondeABusca
+  })
 
   const desempenho = carroSelecionado?.desempenhoPorStage[stageSelecionado.id]
   const desempenhosDoCarro = carroSelecionado
@@ -84,39 +96,69 @@ function App() {
             Catálogo de carros
           </h2>
 
-          <p className="catalog__intro">
-            Escolha entre 12 modelos disponíveis
-          </p>
-
-          {/* FILTROS */}
-          <div className="catalog__controls">
-            <FiltroMarcas
-              marcas={marcas}
-              marcaSelecionada={marcaSelecionada}
-              aoSelecionarMarca={setMarcaSelecionada}
-            />
-
-            {/* BUSCA */}
-            <div className="search-field">
-              <label htmlFor="buscar-carro" className="visually-hidden">
-                Buscar veículo
-              </label>
-
-              <input
-                id="buscar-carro"
-                type="search"
-                placeholder="⌕  Buscar veículo por nome..."
-                className="search-field__input"
-              />
+          {carregando ? (
+            <div className="catalog-state" role="status" aria-live="polite">
+              <span className="catalog-state__loader" aria-hidden="true" />
+              <p className="catalog-state__message">Carregando veículos...</p>
             </div>
-          </div>
+          ) : erro ? (
+            <div className="catalog-state catalog-state--error" role="alert">
+              <p className="catalog-state__message">
+                Não foi possível carregar os veículos. Tente novamente.
+              </p>
+              <button
+                type="button"
+                className="catalog-state__retry"
+                onClick={tentarNovamente}
+              >
+                Tentar novamente
+              </button>
+            </div>
+          ) : (
+            <>
+              <p className="catalog__intro">
+                Escolha entre {carros.length} modelos disponíveis
+              </p>
 
-          {/* GRID DE VEÍCULOS */}
-          <ListaCarros
-            carros={carrosFiltrados}
-            carroSelecionado={carroSelecionado}
-            aoSelecionarCarro={alternarCarroSelecionado}
-          />
+              {/* FILTROS */}
+              <div className="catalog__controls">
+                <FiltroMarcas
+                  marcas={marcas}
+                  marcaSelecionada={marcaSelecionada}
+                  aoSelecionarMarca={setMarcaSelecionada}
+                />
+
+                {/* BUSCA */}
+                <div className="search-field">
+                  <label htmlFor="buscar-carro" className="visually-hidden">
+                    Buscar veículo
+                  </label>
+
+                  <input
+                    id="buscar-carro"
+                    type="search"
+                    placeholder="⌕  Buscar veículo por nome..."
+                    className="search-field__input"
+                    value={busca}
+                    onChange={(event) => setBusca(event.target.value)}
+                  />
+                </div>
+              </div>
+
+              {/* GRID DE VEÍCULOS */}
+              {carrosFiltrados.length > 0 ? (
+                <ListaCarros
+                  carros={carrosFiltrados}
+                  carroSelecionado={carroSelecionado}
+                  aoSelecionarCarro={alternarCarroSelecionado}
+                />
+              ) : (
+                <div className="catalog-state" role="status" aria-live="polite">
+                  <p className="catalog-state__message">Nenhum veículo encontrado</p>
+                </div>
+              )}
+            </>
+          )}
         </section>
 
         {/* SIMULAÇÃO DE PERFORMANCE */}
